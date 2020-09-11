@@ -18,11 +18,11 @@ class FastClangFormatPlugin(object):
         self.nvim = nvim
 
     @neovim.command('FastClangFormat', sync=True, nargs=0)
-    def apply_clang_format(self, args):
+    def apply_clang_format(self):
         self._impl()
 
     @neovim.command('FastClangFormatAsync', sync=False, nargs=0)
-    def apply_clang_format_async(self, args):
+    def apply_clang_format_async(self):
         self._impl()
 
     def _impl(self):
