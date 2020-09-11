@@ -1,12 +1,11 @@
 import neovim
 
+import subprocess
+
 # -----------------------------------------------------------------------------
 # --------------------------------- Constants ---------------------------------
 # -----------------------------------------------------------------------------
-DEFAULT_COMMENT_STR = '//'
-DEFAULT_N_COL = 80
-DEFAULT_SPLIT_CHAR = '-'
-SPLIT_CHAR_CANDS = ['-', '=', '*', '#']
+CLANG_FORMAT_CMD = 'clang-format'
 
 
 # -----------------------------------------------------------------------------
@@ -20,9 +19,13 @@ class FastClangFormatPlugin(object):
 
     @neovim.command('FastClangFormat', sync=True, nargs='?')
     def make_split_comment(self, args):
-        self.nvim.current.buffer = ['this', 'is', 'a', 'pen']
-
+        # Obtain full path of the current filename
+        filename = self.nvim.eval("expand('%:p')")
+        # Apply clang-format
+        subprocess.call([CLANG_FORMAT_CMD, '-i', filename])
+        # Open again
+        self.nvim.command(f'edit {filename}')
 
 # -----------------------------------------------------------------------------
-# ------------------------------ Implementation -------------------------------
+# -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
